@@ -238,7 +238,6 @@ MonoBehaviour:
   playerPrefab: {fileID: 8413087826530207580, guid: b1d88cc75f099b84fa98c88de403bfbf, type: 3}
   enemyPrefab: {fileID: 6780752456691977360, guid: 553d9a1719024ed4e801d37d4b7936d2, type: 3}
   enemySpawnInterval: 3
-  _currentEnemySpawnIndex: 0
 --- !u!4 &721902060
 Transform:
   m_ObjectHideFlags: 0
@@ -3796,6 +3795,7 @@ GameObject:
   - component: {fileID: 1704793452}
   - component: {fileID: 1704793454}
   - component: {fileID: 1704793453}
+  - component: {fileID: 1704793455}
   m_Layer: 0
   m_Name: TilemapBackground
   m_TagString: Untagged
@@ -37531,6 +37531,25 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!95 &1704793455
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704793451}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 06c81f806acbe704eaf7c54451a3b3e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1787846186
 GameObject:
   m_ObjectHideFlags: 0

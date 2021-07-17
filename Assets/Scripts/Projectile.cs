@@ -10,6 +10,11 @@ public class Projectile : MonoBehaviour
     [SerializeField] public TileBase tileBaseSteelWall;
     [SerializeField] public TileBase tileBaseBrickWall;
 
+    private bool _isEnemy = false;
+    public bool IsEnemy {
+        set {_isEnemy = value;}
+        get {return _isEnemy;}
+    }
 
     public float damageRadius = 0.3f;
 
@@ -57,15 +62,28 @@ public class Projectile : MonoBehaviour
                     {
                         wasCollide = true;
                     }
-                }
-
+                } 
             }
         }
+ 
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), 0.2f);
+        foreach (Collider2D hitCollider in hitColliders)
+        { 
+            if (hitCollider.name.IndexOf("Enemy") > -1 && !_isEnemy)
+            {
+                hitCollider.gameObject.GetComponent<Tank>().health -= 100; 
+                wasCollide = true;
+            }  
+            else if (hitCollider.name.IndexOf("Player") > -1 && _isEnemy)
+            {
+                hitCollider.gameObject.GetComponent<Tank>().health -= 100; 
+                wasCollide = true;
+            } 
+        }  
 
         if (wasCollide)
         {
             Destroy(this.gameObject);
         }
-
     }
 }

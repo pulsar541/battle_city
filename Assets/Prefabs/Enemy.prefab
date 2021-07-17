@@ -211,8 +211,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b66072652d53b3d40a96fff8eb5327b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   baseSpeed: 6
   projectilePrefab: {fileID: 1258599554770536881, guid: aff0241f8385dae4c96b6420de880afd, type: 3}
+  explosionPrefab: {fileID: 7575936733893241632, guid: bcc7fe933663e4d469a3acd1ed76bf83, type: 3}
   shootInterval: 2
   turnInterval: 5
 --- !u!58 &8650741386988130656

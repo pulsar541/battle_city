@@ -1,26 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
+using UnityEngine.Tilemaps;
 
 public class Enemy : Tank
 { 
     public float shootInterval = 2.0f; 
     public float turnInterval = 5.0f;
     private float _shootIntervalCounter = 0; 
-    private float _turnIntervalCounter = 0;
-   
-
-    int direction = 0;
-
-
-    Vector3Int saveSellWorldPosition = new Vector3Int();
-    
-    enum Direction {
-        DIR_LEFT = 0,
-        DIR_RIGHT = 1,   
-        DIR_UP = 2,
-        DIR_DOWN = 3,  
-    }
+    private float _turnIntervalCounter = 0; 
+    int direction = 0;   
 
     void Update()
     {     
@@ -30,13 +19,10 @@ public class Enemy : Tank
             _turnIntervalCounter = 0;
         }
         _turnIntervalCounter += Time.deltaTime; 
- 
-        Vector3Int cellWorldPosition = tilemapCollider.WorldToCell(transform.position);
-
+   
         if(_rigidbody.velocity.magnitude < 0.2f)
         {
-           direction = Random.Range(0, 4); 
-           saveSellWorldPosition = cellWorldPosition;
+           direction = Random.Range(0, 4);  
         }
  
         switch((Direction)direction) {
@@ -56,7 +42,7 @@ public class Enemy : Tank
 
         if(_shootIntervalCounter >= shootInterval) 
         {
-            Shoot(); 
+            Shoot(true); 
             _shootIntervalCounter = 0;
         }
         _shootIntervalCounter += Time.deltaTime;
