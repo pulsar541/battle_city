@@ -5,8 +5,7 @@ using UnityEngine.Tilemaps;
 public class Projectile : MonoBehaviour
 {
     private Vector3 _direction;
-    public float speed = 15.0f;
-    private Camera mainCamera;
+    public float speed = 15.0f; 
     private Tilemap tilemapWalls;
     [SerializeField] public TileBase tileBaseSteelWall;
     [SerializeField] public TileBase tileBaseBrickWall;
@@ -27,33 +26,31 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         tilemapWalls = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-    }
-    void Start()
-    {
-        mainCamera = Camera.main;
-    }
+    } 
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += transform.TransformDirection(speed * Time.deltaTime, 0, 0);
+        Vector3 movemont = transform.TransformDirection(speed * Time.deltaTime, 0, 0);     
+        transform.position += movemont;
 
         bool wasCollide = false;
+        float damageRadiusX = Mathf.Abs(movemont.x) < Mathf.Abs(movemont.y) ? damageRadius : 0;
+        float damageRadiusY = Mathf.Abs(movemont.y) < Mathf.Abs(movemont.x) ? damageRadius : 0;
 
-        for (float i = -damageRadius; i <= damageRadius; i += damageRadius * 0.5f)
+        for (float i = -damageRadiusX; i <= damageRadiusX; i += damageRadius * 0.5f)
         {
-            for (float j = -damageRadius; j <= damageRadius; j += damageRadius * 0.5f)
+            for (float j = -damageRadiusY; j <= damageRadiusY; j += damageRadius * 0.5f)
             {
-                Vector3 cellWorldPosition = tilemapWalls.WorldToCell(transform.position + new Vector3(i, j, 0));
-                Vector3Int cellRoundWorldPosition = Vector3Int.RoundToInt(cellWorldPosition);
+                Vector3Int cellWorldPosition = tilemapWalls.WorldToCell(transform.position + new Vector3(i, j, 0)); 
 
-                if (tilemapWalls.HasTile(cellRoundWorldPosition))
+                if (tilemapWalls.HasTile(cellWorldPosition))
                 {
-                    TileBase tileBase = tilemapWalls.GetTile(cellRoundWorldPosition);
+                    TileBase tileBase = tilemapWalls.GetTile(cellWorldPosition);
 
                     if (tileBase == tileBaseBrickWall)
                     {
-                        tilemapWalls.SetTile(cellRoundWorldPosition, null);
+                        tilemapWalls.SetTile(cellWorldPosition, null);
                     }
 
                     if (tileBase == tileBaseSteelWall || tileBase == tileBaseBrickWall)
