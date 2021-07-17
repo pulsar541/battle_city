@@ -150,6 +150,7 @@ MonoBehaviour:
   baseSpeed: 6
   projectilePrefab: {fileID: 1258599554770536881, guid: aff0241f8385dae4c96b6420de880afd, type: 3}
   explosionPrefab: {fileID: 7575936733893241632, guid: bcc7fe933663e4d469a3acd1ed76bf83, type: 3}
+  lastDirection: -1
   tileBaseIce: {fileID: 11400000, guid: 962d5a1818b99f34390d6f975f3a721f, type: 2}
 --- !u!50 &498517919451408605
 Rigidbody2D:

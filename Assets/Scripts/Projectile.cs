@@ -69,7 +69,12 @@ public class Projectile : MonoBehaviour
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), 0.2f);
         foreach (Collider2D hitCollider in hitColliders)
         { 
-            if (hitCollider.name.IndexOf("Enemy") > -1 && !_isEnemy)
+            
+            if(hitCollider.name.IndexOf("Projectile") > -1 && hitCollider.gameObject.GetInstanceID() != this.gameObject.GetInstanceID()) {
+                Destroy(hitCollider.gameObject);
+                wasCollide = true;
+            }
+            else if (hitCollider.name.IndexOf("Enemy") > -1 && !_isEnemy)
             {
                 hitCollider.gameObject.GetComponent<Tank>().health -= 100; 
                 wasCollide = true;
