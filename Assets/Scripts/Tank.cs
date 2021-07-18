@@ -8,8 +8,7 @@ public class Tank : MonoBehaviour
     public float health = 100;
     public float baseSpeed = 6; 
     protected Rigidbody2D _rigidbody;
-    private Vector2 _currentPosition;
-    private Vector2 _oldPosition; 
+
  
     protected Tilemap tilemapCollider;
 
@@ -38,11 +37,7 @@ public class Tank : MonoBehaviour
         tilemapCollider = GameObject.Find("Tilemap").GetComponent<Tilemap>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _oldPosition = _currentPosition = transform.position;
-    }
+  
 
 
     public void GoLeft() {
