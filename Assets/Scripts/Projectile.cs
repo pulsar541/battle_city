@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public class Projectile : MonoBehaviour
+public class Projectile : BattleObject
 {
     private Vector3 _direction;
     public float speed = 15.0f; 
+
+    public int creatorInstanseID;
     private Tilemap tilemapWalls;
     [SerializeField] public TileBase tileBaseSteelWall;
     [SerializeField] public TileBase tileBaseBrickWall;
+    [SerializeField] public TileBase tileBaseMapLimit; 
+
+    [SerializeField] public GameObject canvasTempInfoPrefab; 
 
     private bool _isEnemy = false;
     public bool IsEnemy {
@@ -32,9 +37,8 @@ public class Projectile : MonoBehaviour
     {
         tilemapWalls = GameObject.Find("Tilemap").GetComponent<Tilemap>();
     } 
-
-    // Update is called once per frame
-    void Update()
+ 
+    public override void BattleObjectUpdate()
     {
         Vector3 movemont = transform.TransformDirection(speed * Time.deltaTime, 0, 0);     
         transform.position += movemont;
@@ -58,7 +62,7 @@ public class Projectile : MonoBehaviour
                         tilemapWalls.SetTile(cellWorldPosition, null);
                     }
 
-                    if (tileBase == tileBaseSteelWall || tileBase == tileBaseBrickWall)
+                    if (tileBase == tileBaseSteelWall || tileBase == tileBaseBrickWall || tileBase == tileBaseMapLimit)
                     {
                         wasCollide = true;
                     }
@@ -69,26 +73,51 @@ public class Projectile : MonoBehaviour
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), 0.2f);
         foreach (Collider2D hitCollider in hitColliders)
         { 
-            
-            if(hitCollider.name.IndexOf("Projectile") > -1 && hitCollider.gameObject.GetInstanceID() != this.gameObject.GetInstanceID()) {
-                Destroy(hitCollider.gameObject);
-                wasCollide = true;
+            if(hitCollider.gameObject.GetInstanceID() != creatorInstanseID) 
+            {
+                if (hitCollider.name.IndexOf("Projectile") > -1 && hitCollider.gameObject.GetInstanceID() != this.gameObject.GetInstanceID()) {
+                    hitCollider.gameObject.GetComponent<BattleObject>().Health = 0;
+                    wasCollide = true;
+                }
+                else if (hitCollider.name.IndexOf("Enemy") > -1)
+                {
+                    if(!_isEnemy) 
+                    {   Enemy enemy = hitCollider.gameObject.GetComponent<Enemy>();
+                        enemy.Health -= 100; 
+                        GameObject somePlayer = GameObject.Find("Player"+creatorInstanseID.ToString());
+                        if(somePlayer != null)
+                            somePlayer.GetComponent<Player>().PlusScore(enemy.price);  
+                        //GameObject label = GameObject.Find("LabelPlusScore");
+                        //if(label != null)
+                         //   label.GetComponent<LabelPlusScore>().Init(transform.position, enemy.price);
+
+                         GameObject go = Instantiate(canvasTempInfoPrefab, transform.position, Quaternion.identity);
+                    }
+                    wasCollide = true;
+                }  
+                else if (hitCollider.name.IndexOf("Player") > -1 && _isEnemy)
+                {
+                    hitCollider.gameObject.GetComponent<BattleObject>().Health -= 100; 
+                    wasCollide = true;
+                } 
+                else if (hitCollider.name.IndexOf("Base") > -1)
+                {
+                    hitCollider.gameObject.GetComponent<BattleObject>().Health -= 100; 
+                    wasCollide = true;
+                } 
             }
-            else if (hitCollider.name.IndexOf("Enemy") > -1 && !_isEnemy)
-            {
-                hitCollider.gameObject.GetComponent<Tank>().health -= 100; 
-                wasCollide = true;
-            }  
-            else if (hitCollider.name.IndexOf("Player") > -1 && _isEnemy)
-            {
-                hitCollider.gameObject.GetComponent<Tank>().health -= 100; 
-                wasCollide = true;
-            } 
         }  
 
         if (wasCollide)
         {
-            Destroy(this.gameObject);
+            Health = 0;
         }
+ 
+    }
+
+    public override void OnZeroHealth()
+    {
+        base.OnZeroHealth();
+        Destroy(this.gameObject);
     }
 }

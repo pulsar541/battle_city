@@ -41,7 +41,8 @@ public class StartupController : MonoBehaviour
     }
  
     IEnumerator LoadAsyncLevelScene(int modeNum)
-    {  
+    {   
+        SceneController.gameMode = modeNum;
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/LevelScene"); 
         while (!asyncLoad.isDone)
         {

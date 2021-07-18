@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 2704023050039755783}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,12 +146,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5295eca15a6fd14f8898cc348692afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  baseSpeed: 6
   projectilePrefab: {fileID: 1258599554770536881, guid: aff0241f8385dae4c96b6420de880afd, type: 3}
   explosionPrefab: {fileID: 7575936733893241632, guid: bcc7fe933663e4d469a3acd1ed76bf83, type: 3}
+  Health: 100
+  Lives: 1
+  baseSpeed: 6
   lastDirection: -1
   tileBaseIce: {fileID: 11400000, guid: 962d5a1818b99f34390d6f975f3a721f, type: 2}
+  selfNum: -1
+  spawnPosition: {x: 0, y: 0, z: 0}
 --- !u!50 &498517919451408605
 Rigidbody2D:
   serializedVersion: 4

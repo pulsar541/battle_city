@@ -9,27 +9,30 @@ public class Enemy : Tank
     public float turnInterval = 5.0f;
     private float _shootIntervalCounter = 0;
     private float _turnIntervalCounter = 0;
-    int direction = 0;
+    Direction direction = 0;
 
     protected Vector2Int _currentGridPosition;
     protected Vector2Int _lastTurnPositionAfterEnemyCollide;
 
+    public int price = 100;
+
     void Start()
     {
+        gameObject.name = "Enemy" + GetInstanceID().ToString();
         _lastTurnPositionAfterEnemyCollide = _currentGridPosition = Vector2Int.FloorToInt(transform.position);
     }
-    void Update()
+    public override void BattleObjectUpdate()
     { 
          _turnIntervalCounter += Time.deltaTime;
 
         if (_turnIntervalCounter >= turnInterval)
         {
-            direction = Random.Range(0, 4);
+            direction = (Direction)Random.Range(0, 4);
             _turnIntervalCounter = 0;
         }
         else {
             bool wasCollideEnemy = false;
-            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), 1.0f);
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), transform.localScale.x);
             foreach (Collider2D hitCollider in hitColliders)
             {
                 if (hitCollider.gameObject.GetInstanceID() != this.gameObject.GetInstanceID() && hitCollider.gameObject.name.IndexOf("Enemy") >= 0)
@@ -40,18 +43,18 @@ public class Enemy : Tank
 
             if (wasCollideEnemy && _currentGridPosition != _lastTurnPositionAfterEnemyCollide)
             {
-                direction = Random.Range(0, 4);
+                direction = (Direction)Random.Range(0, 4);
                 _lastTurnPositionAfterEnemyCollide = Vector2Int.FloorToInt(transform.position);
             }
             else if (_rigidbody.velocity.magnitude < 0.1f)
             {
-                direction = Random.Range(0, 4);
+                direction = (Direction)Random.Range(0, 4);
             }
         }
 
         _currentGridPosition = Vector2Int.FloorToInt(transform.position);
 
-        switch ((Direction)direction)
+        switch (direction)
         {
             case Direction.DIR_LEFT:
                 GoLeft();
@@ -73,7 +76,8 @@ public class Enemy : Tank
             _shootIntervalCounter = 0;
         }
         _shootIntervalCounter += Time.deltaTime;
+ 
 
     }
-
+ 
 }

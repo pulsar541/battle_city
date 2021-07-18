@@ -127,9 +127,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1033129a31b0ff24c968d17b79b484de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 0}
+  explosionPrefab: {fileID: 0}
+  Health: 100
+  Lives: 1
   speed: 15
+  creatorInstanseID: 0
   tileBaseSteelWall: {fileID: 11400000, guid: 3941fc68ed1799a48a6040d21584605c, type: 2}
   tileBaseBrickWall: {fileID: 11400000, guid: 0fc22033e73224e4cb012eced0a10077, type: 2}
+  tileBaseMapLimit: {fileID: 11400000, guid: 638030e7945b95448842e2b2a6910d77, type: 2}
+  canvasTempInfoPrefab: {fileID: 6063226227905059381, guid: 664ef950dee80fd4b93fc2d0bb2bf574, type: 3}
   damageRadius: 0.5
 --- !u!58 &4396620531205909495
 CircleCollider2D:
