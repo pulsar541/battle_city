@@ -54,14 +54,14 @@ public class Tank : BattleObject
     }
     public void GoUp()
     {
-        _movement = new Vector3(0, -baseSpeed);
-        _childLocalRotation = Quaternion.Euler(0, 0, 90);
+        _movement = new Vector3(0, baseSpeed);
+        _childLocalRotation = Quaternion.Euler(0, 0, 270);
         lastDirection = (int)Direction.DIR_UP;
     }
     public void GoDown()
     {
-        _movement = new Vector3(0, baseSpeed);
-        _childLocalRotation = Quaternion.Euler(0, 0, 270);
+        _movement = new Vector3(0, -baseSpeed);
+        _childLocalRotation = Quaternion.Euler(0, 0, 90);
         lastDirection = (int)Direction.DIR_DOWN;
     }
 

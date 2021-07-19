@@ -13,26 +13,48 @@ public class ScoreController : MonoBehaviour
         txt = GameObject.Find("Player1ScoreValue");
         if (txt != null)  
             txt.GetComponent<UnityEngine.UI.Text>().text = Global.score[0].ToString();
-            
+
+        txt = GameObject.Find("P1TankCount1Value");
+        if (txt != null)  
+            txt.GetComponent<UnityEngine.UI.Text>().text =  Global.destroyedTankTypesCounter[0, (int)Tank.Type.TYPE_SIMPLE] .ToString();
+      
+        txt = GameObject.Find("P1TankCount2Value");
+        if (txt != null)  
+            txt.GetComponent<UnityEngine.UI.Text>().text =  Global.destroyedTankTypesCounter[0, (int)Tank.Type.TYPE_BTR] .ToString();
+
+        txt = GameObject.Find("P1TankScore1Value");
+        if (txt != null)  
+            txt.GetComponent<UnityEngine.UI.Text>().text =  (Global.destroyedTankTypesCounter[0, 0] * 100).ToString();
+      
+        txt = GameObject.Find("P1TankScore2Value");
+        if (txt != null)  
+            txt.GetComponent<UnityEngine.UI.Text>().text =  (Global.destroyedTankTypesCounter[0, 1] * 200).ToString();
+
+
+
+
         txt = GameObject.Find("Player2ScoreValue");
         if (txt != null)  
             txt.GetComponent<UnityEngine.UI.Text>().text = Global.score[1].ToString();
       
-        txt = GameObject.Find("TankCount1Value");
+        txt = GameObject.Find("P2TankCount1Value");
         if (txt != null)  
-            txt.GetComponent<UnityEngine.UI.Text>().text =  Global.destroyedTankTypesCounter[0, (int)Tank.Type.TYPE_SIMPLE] .ToString();
+            txt.GetComponent<UnityEngine.UI.Text>().text =  Global.destroyedTankTypesCounter[1, (int)Tank.Type.TYPE_SIMPLE] .ToString();
       
-        txt = GameObject.Find("TankCount2Value");
+        txt = GameObject.Find("P2TankCount2Value");
         if (txt != null)  
-            txt.GetComponent<UnityEngine.UI.Text>().text =  Global.destroyedTankTypesCounter[0, (int)Tank.Type.TYPE_BTR] .ToString();
+            txt.GetComponent<UnityEngine.UI.Text>().text =  Global.destroyedTankTypesCounter[1, (int)Tank.Type.TYPE_BTR] .ToString();
 
-        txt = GameObject.Find("TankScore1Value");
+        txt = GameObject.Find("P2TankScore1Value");
         if (txt != null)  
-            txt.GetComponent<UnityEngine.UI.Text>().text =  (Global.destroyedTankTypesCounter[0, 0] * 100).ToString();
+            txt.GetComponent<UnityEngine.UI.Text>().text =  (Global.destroyedTankTypesCounter[1, 0] * 100).ToString();
       
-        txt = GameObject.Find("TankScore2Value");
+        txt = GameObject.Find("P2TankScore2Value");
         if (txt != null)  
-            txt.GetComponent<UnityEngine.UI.Text>().text =  (Global.destroyedTankTypesCounter[0, 1] * 200).ToString();
+            txt.GetComponent<UnityEngine.UI.Text>().text =  (Global.destroyedTankTypesCounter[1, 1] * 200).ToString();
+
+
+ 
 
         txt = GameObject.Find("TotalScoreValue");
         if (txt != null)  
@@ -43,6 +65,9 @@ public class ScoreController : MonoBehaviour
             }
             txt.GetComponent<UnityEngine.UI.Text>().text = total.ToString();
         }
+
+
+
 
  
     }

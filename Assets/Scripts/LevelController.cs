@@ -14,9 +14,7 @@ public class LevelController : MonoBehaviour
     Vector3 spawnPlayer1 = new Vector3(9, -24, 0);
     Vector3 spawnPlayer2 = new Vector3(17, -24, 0);
 
-    Vector3[] spawnEnemy = { new Vector3(1, 0, 0), new Vector3(13, 0, 0), new Vector3(24, 0, 0) }; //(1,0,0); 
-                                                                                                   //Vector3 spawnEnemy2 = new Vector3(13,0,0);//
-                                                                                                   //Vector3 spawnEnemy3 = new Vector3(24,0,0);
+    Vector3[] spawnEnemy = { new Vector3(1, 0, 0), new Vector3(13, 0, 0), new Vector3(24, 0, 0) }; 
 
     public float enemySpawnInterval = 3.0f;
     private int _currentEnemySpawnIndex = 0;
@@ -38,13 +36,18 @@ public class LevelController : MonoBehaviour
         {
             case 0:
                 player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity);
-                player1.GetComponent<Player>().selfIndex = 0;
+                player1.GetComponent<Player>().selfIndex = 0; 
+                player1.AddComponent<InputsPlayerOne>();
+
                 break;
             case 1:
                 player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity);
                 player1.GetComponent<Player>().selfIndex = 0;
+                player1.AddComponent<InputsPlayerOne>();
+
                 player2 = Instantiate(playerPrefab, spawnPlayer2, Quaternion.identity);
                 player2.GetComponent<Player>().selfIndex = 1;
+                player2.AddComponent<InputsPlayerTwo>(); 
                 break;
             case 2:
                 break;

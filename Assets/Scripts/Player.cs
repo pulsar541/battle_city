@@ -12,9 +12,9 @@ public class Player : Tank
 
     public Vector3 spawnPosition = new Vector3();
 
-    private float _shootInterval = 0;
- 
-  
+    public float _shootInterval = 0; 
+    
+
     void Start() {
         gameObject.name = "Player" + GetInstanceID().ToString();
         spawnPosition = transform.position;
@@ -30,6 +30,8 @@ public class Player : Tank
             Global.destroyedTankTypesCounter[selfIndex, i] = 0;
     }
 
+    
+
     public override void BattleObjectUpdate()
     {   
  
@@ -37,7 +39,10 @@ public class Player : Tank
             return; 
 
         Vector3Int cellWorldPosition = tilemapCollider.WorldToCell(transform.position);
-       
+        
+        if(GetComponent<InputsPlayer>() != null)
+            GetComponent<InputsPlayer>().InputsUpdate(); 
+
         if ( _rigidbody.velocity.magnitude > 0.1f && tilemapCollider.HasTile(cellWorldPosition) && tilemapCollider.GetTile(cellWorldPosition) == tileBaseIce)
         {
             switch((Direction)lastDirection) {
@@ -55,37 +60,9 @@ public class Player : Tank
                     break;                                                
             } 
      
-        }
-        else  {
-            if (Input.GetButton("Horizontal"))
-            {   
-                if(Input.GetAxis("Horizontal") < 0) 
-                    GoLeft(); 
-                else 
-                    GoRight(); 
-            }
-            
-            if (Input.GetButton("Vertical"))
-            {              
-                if(Input.GetAxis("Vertical") < 0) 
-                    GoUp();
-                else 
-                    GoDown(); 
-            }
-        }
-         
-        if (Input.GetButton("Fire1")) { 
-            if(_shootInterval >= 0.5f  || _shootInterval == 0) 
-            {
-                 Shoot();
-                 if(_shootInterval > 0)
-                    _shootInterval = 0;
-            }
-            _shootInterval += Time.deltaTime;
-        }  
-        if (Input.GetButtonUp("Fire1")) {
-            _shootInterval = 0;
         } 
+         
+
     }
 
 
