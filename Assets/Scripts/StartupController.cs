@@ -6,13 +6,18 @@ public class StartupController : MonoBehaviour
 {
 
     [SerializeField] public GameObject selectorPrefab;
+
+     
     int currentSelectorMode;
     int modesCount = 3;
+
+    Camera mainCamera;
     // Start is called before the first frame update
     void Start()
     {
         currentSelectorMode = 0;
-        UpdateSelectorPos(currentSelectorMode);
+        UpdateSelectorPos(currentSelectorMode); 
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -32,7 +37,10 @@ public class StartupController : MonoBehaviour
         }  
 
         if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Submit")) {
-            StartCoroutine(LoadAsyncLevelScene(currentSelectorMode));
+            if(mainCamera.GetComponent<StartupCamera>().IsOnTarget())
+                StartCoroutine(LoadAsyncLevelScene(currentSelectorMode));
+            else 
+                mainCamera.GetComponent<StartupCamera>().SetPositionToTarget(); 
         }      
     }
 
@@ -42,7 +50,7 @@ public class StartupController : MonoBehaviour
  
     IEnumerator LoadAsyncLevelScene(int modeNum)
     {   
-        SceneController.gameMode = modeNum;
+        LevelController.gameMode = modeNum;
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/LevelScene"); 
         while (!asyncLoad.isDone)
         {

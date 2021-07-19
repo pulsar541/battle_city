@@ -19,10 +19,20 @@ public class StartupCamera : MonoBehaviour
             transform.position += new Vector3(0, startupCameraSpeed * Time.deltaTime, 0);
 
             if(startupCameraSpeed > 0 && transform.position.y > 0) 
-                transform.position  = new Vector3(0, 0, -1);
+                SetPositionToTarget();
 
             if(startupCameraSpeed < 0 && transform.position.y < 0) 
-                transform.position  = new Vector3(0, 0, -1);
+                SetPositionToTarget();
         }
+    }
+
+    public void SetPositionToTarget() 
+    {
+        transform.position  = new Vector3(0, 0, -1);
+    }
+
+    public bool IsOnTarget() 
+    {
+        return  transform.position.y == 0;
     }
 }

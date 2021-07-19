@@ -84,14 +84,14 @@ public class Projectile : BattleObject
                     if(!_isEnemy) 
                     {   Enemy enemy = hitCollider.gameObject.GetComponent<Enemy>();
                         enemy.Health -= 100; 
-                        GameObject somePlayer = GameObject.Find("Player"+creatorInstanseID.ToString());
-                        if(somePlayer != null)
-                            somePlayer.GetComponent<Player>().PlusScore(enemy.price);  
-                        //GameObject label = GameObject.Find("LabelPlusScore");
-                        //if(label != null)
-                         //   label.GetComponent<LabelPlusScore>().Init(transform.position, enemy.price);
-
-                         GameObject go = Instantiate(canvasTempInfoPrefab, transform.position, Quaternion.identity);
+                        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                        foreach(GameObject player in players) {
+                            if(player.GetInstanceID() == creatorInstanseID) {
+                                player.GetComponent<Player>().UpdateScore(enemy.price);   
+                                player.GetComponent<Player>().UpdateDestroyedTanksInfo(Tank.Type.TYPE_SIMPLE); 
+                            }
+                        } 
+                        GameObject go = Instantiate(canvasTempInfoPrefab, transform.position, Quaternion.identity);
                     }
                     wasCollide = true;
                 }  

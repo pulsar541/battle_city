@@ -18,6 +18,13 @@ public class Tank : BattleObject
     public int lastDirection = (int)Direction.STOP;
 
 
+    public enum Type
+    {
+        TYPE_SIMPLE = 0,
+        TYPE_BTR, 
+        MAX_TYPES
+    }
+
     protected enum Direction
     {
         STOP = -1,
@@ -88,11 +95,11 @@ public class Tank : BattleObject
         projectile.GetComponent<Projectile>().IsEnemy = isEnemyProjectile;
         projectile.GetComponent<Projectile>().creatorInstanseID = this.gameObject.GetInstanceID();
     }
-
+ 
     public override void OnZeroHealth()
     {  
         
-        SceneController.UpdateBattleInformation();
+        LevelController.UpdateBattleInformation();
         GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         //Destroy(this.gameObject); 
     }
