@@ -29,9 +29,9 @@ public class InputsPlayerOne : InputsPlayer
             if (Input.GetButton("Vertical"))
             {
                 if (Input.GetAxis("Vertical") < 0)
-                     tank.GoUp();
-                else
                      tank.GoDown();
+                else
+                     tank.GoUp();
             }  
 
             if (Input.GetButton("Fire1")) { 
