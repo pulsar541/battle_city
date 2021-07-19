@@ -40,9 +40,8 @@ public class Player : Tank
 
         Vector3Int cellWorldPosition = tilemapCollider.WorldToCell(transform.position);
         
-        if(GetComponent<InputsPlayer>() != null)
-            GetComponent<InputsPlayer>().InputsUpdate(); 
 
+        bool onIce = false;
         if ( _rigidbody.velocity.magnitude > 0.1f && tilemapCollider.HasTile(cellWorldPosition) && tilemapCollider.GetTile(cellWorldPosition) == tileBaseIce)
         {
             switch((Direction)lastDirection) {
@@ -59,9 +58,11 @@ public class Player : Tank
                     GoDown(); 
                     break;                                                
             } 
-     
+            onIce = true;
         } 
-         
+              
+        if(GetComponent<InputsPlayer>() != null)
+            GetComponent<InputsPlayer>().InputsUpdate(onIce);   
 
     }
 

@@ -13,19 +13,23 @@ public class InputsPlayerTwo : InputsPlayer
     }
 
     // Update is called once per frame
-     public override void InputsUpdate()
+    public override void InputsUpdate(bool onIce = false)
     {
-         if (Input.GetKey(KeyCode.LeftArrow))
-            tank.GoLeft();
+        if(!onIce) 
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+                tank.GoLeft();
 
-        if (Input.GetKey(KeyCode.RightArrow))
-            tank.GoRight();
+            if (Input.GetKey(KeyCode.RightArrow))
+                tank.GoRight();
 
-        if (Input.GetKey(KeyCode.UpArrow))
-            tank.GoUp();
+            if (Input.GetKey(KeyCode.UpArrow))
+                tank.GoUp();
 
-        if (Input.GetKey(KeyCode.DownArrow))
-            tank.GoDown(); 
+            if (Input.GetKey(KeyCode.DownArrow))
+                tank.GoDown(); 
+
+        }
 
         if (Input.GetKey(KeyCode.RightControl))
         {

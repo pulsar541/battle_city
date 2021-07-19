@@ -14,25 +14,28 @@ public class InputsPlayerOne : InputsPlayer
     }
 
     // Update is called once per frame
-    public override void InputsUpdate()
-    {
+    public override void InputsUpdate(bool onIce = false)
+    { 
          if(LevelController.gameMode == 0) 
         {
-            if (Input.GetButton("Horizontal"))
+            if(!onIce) 
             {
-                if (Input.GetAxis("Horizontal") < 0)
-                    tank.GoLeft();
-                else
-                     tank.GoRight();
-            }
+                if (Input.GetButton("Horizontal"))
+                {
+                    if (Input.GetAxis("Horizontal") < 0)
+                        tank.GoLeft();
+                    else
+                        tank.GoRight();
+                }
 
-            if (Input.GetButton("Vertical"))
-            {
-                if (Input.GetAxis("Vertical") < 0)
-                     tank.GoDown();
-                else
-                     tank.GoUp();
-            }  
+                if (Input.GetButton("Vertical"))
+                {
+                    if (Input.GetAxis("Vertical") < 0)
+                        tank.GoDown();
+                    else
+                        tank.GoUp();
+                }  
+            }
 
             if (Input.GetButton("Fire1")) { 
                 if(_shootInterval >= 0.5f  || _shootInterval == 0) 
@@ -49,17 +52,20 @@ public class InputsPlayerOne : InputsPlayer
         }
         else if(LevelController.gameMode == 1) 
         {
-            if (Input.GetKey(KeyCode.A))
-                tank.GoLeft();
+            if(!onIce) 
+            {
+                if (Input.GetKey(KeyCode.A))
+                    tank.GoLeft();
 
-            if (Input.GetKey(KeyCode.D))
-                tank.GoRight();
+                if (Input.GetKey(KeyCode.D))
+                    tank.GoRight();
 
-            if (Input.GetKey(KeyCode.W))
-                tank.GoUp();
+                if (Input.GetKey(KeyCode.W))
+                    tank.GoUp();
 
-            if (Input.GetKey(KeyCode.S))
-                tank.GoDown(); 
+                if (Input.GetKey(KeyCode.S))
+                    tank.GoDown(); 
+            }
 
             if (Input.GetKey(KeyCode.LeftControl))
             {

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class InputsPlayer : MonoBehaviour
 { 
-   public virtual void InputsUpdate() {}
+   public virtual void InputsUpdate(bool onIce = false) {}
 }
