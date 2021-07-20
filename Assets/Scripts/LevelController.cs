@@ -110,8 +110,11 @@ public class LevelController : MonoBehaviour
         } 
 
         int enemyTanksDestroyed = 0;
-        for(int type = 0; type < (int)Tank.Type.MAX_TYPES; type ++)
-            enemyTanksDestroyed += Global.destroyedTankTypesCounter[0, type];
+
+        for(int p = 0; p < Global.MaxPlayersCount; p ++)
+            for(int type = 0; type < (int)Tank.Type.MAX_TYPES; type ++)
+                enemyTanksDestroyed += Global.destroyedTankTypesCounter[p, type];
+
 
         if(enemyTanksDestroyed >= maxEnemyCount) {
             StartCoroutine(LoadAsyncScene("ScoreScene", true));
