@@ -46,25 +46,35 @@ public class Projectile : BattleObject
         float damageRadiusX = Mathf.Abs(movemont.x) < Mathf.Abs(movemont.y) ? damageRadius : 0;
         float damageRadiusY = Mathf.Abs(movemont.y) < Mathf.Abs(movemont.x) ? damageRadius : 0;
 
+    
+        Vector3Int oldCollideTilePos = new Vector3Int();
         for (float i = -damageRadiusX; i <= damageRadiusX; i += damageRadius * 0.5f)
-        {
+        {   
             for (float j = -damageRadiusY; j <= damageRadiusY; j += damageRadius * 0.5f)
-            {
+            { 
                 Vector3Int cellWorldPosition = tilemapWalls.WorldToCell(transform.position + new Vector3(i, j, 0)); 
 
-                if (tilemapWalls.HasTile(cellWorldPosition))
+                if (tilemapWalls.HasTile(cellWorldPosition) && oldCollideTilePos != cellWorldPosition)
                 {
                     TileBase tileBase = tilemapWalls.GetTile(cellWorldPosition);
 
                     if (tileBase == tileBaseBrickWall)
                     {
-                        tilemapWalls.SetTile(cellWorldPosition, null);
+                         tilemapWalls.SetTileFlags(cellWorldPosition, TileFlags.None);
+
+                        Color currColor = tilemapWalls.GetColor(cellWorldPosition); 
+                        Color newColor = new Color(currColor.r, currColor.g, currColor.b, currColor.a - 0.5f); 
+                        tilemapWalls.SetColor(cellWorldPosition, newColor); 
+                        if(newColor.a <= 0.0f)
+                            tilemapWalls.SetTile(cellWorldPosition, null);
+
+                        oldCollideTilePos = cellWorldPosition;
                     }
 
                     if (tileBase == tileBaseSteelWall || tileBase == tileBaseBrickWall || tileBase == tileBaseMapLimit)
                     {
                         wasCollide = true;
-                    }
+                    } 
                 } 
             }
         }
