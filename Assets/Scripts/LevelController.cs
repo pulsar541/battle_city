@@ -36,7 +36,8 @@ public class LevelController : MonoBehaviour
  
     float _msekPauseCnt = 0;
 
-    public int enemyCount = 20;
+    public const int maxEnemyCount = 20;
+    public int enemySpawnCount = 0;
 
     void Start()
     {
@@ -69,6 +70,7 @@ public class LevelController : MonoBehaviour
 
         isGameOver = false;
         _timerGoToScoreScene = 5.0f;
+        enemySpawnCount = 0; 
     }
     // Update is called once per frame
     void Update()
@@ -87,29 +89,32 @@ public class LevelController : MonoBehaviour
         else 
             pauseTextGO.SetActive(false);
 
-        if(LevelController.isPause)
+        if(isPause)
             return;
 
-        if (enemyCount > 0)
+        if (enemySpawnCount < maxEnemyCount)
         {
             if (_enemySpawnCounter > enemySpawnInterval)
             {
+                enemySpawnCount++; 
                 GameObject enemy = Instantiate(enemyPrefab, spawnEnemy[_currentEnemySpawnIndex], Quaternion.identity);
                 _enemySpawnCounter = 0;
                 _currentEnemySpawnIndex++;
                 if (_currentEnemySpawnIndex > 2)
                     _currentEnemySpawnIndex = 0;
-
-                enemyCount--;                
+ 
             }
             _enemySpawnCounter += Time.deltaTime;
-        }
-        else 
-        {
+        } 
+
+        int enemyTanksDestroyed = 0;
+        for(int type = 0; type < (int)Tank.Type.MAX_TYPES; type ++)
+            enemyTanksDestroyed += Global.destroyedTankTypesCounter[0, type];
+
+        if(enemyTanksDestroyed >= maxEnemyCount) {
             StartCoroutine(LoadAsyncScene("ScoreScene"));
         }
-
-
+  
 
         if (gameMode == 0)
         {
