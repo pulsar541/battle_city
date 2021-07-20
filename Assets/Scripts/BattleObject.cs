@@ -17,6 +17,9 @@ public class BattleObject : MonoBehaviour
     public virtual void OnZeroLives() {} 
     void Update() 
     {
+        if(LevelController.isPause)
+            return;
+            
         BattleObjectUpdate();
 
         if(Health <= 0 && Lives > 0)

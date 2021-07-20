@@ -137,6 +137,8 @@ MonoBehaviour:
   tileBaseBrickWall: {fileID: 11400000, guid: 0fc22033e73224e4cb012eced0a10077, type: 2}
   tileBaseMapLimit: {fileID: 11400000, guid: 638030e7945b95448842e2b2a6910d77, type: 2}
   canvasTempInfoPrefab: {fileID: 6063226227905059381, guid: 664ef950dee80fd4b93fc2d0bb2bf574, type: 3}
+  soundSource: {fileID: 8618025748074695591, guid: f6ddb97610953704088cbb49cde5e572, type: 3}
+  explosionSound: {fileID: 8300000, guid: 61b11b20704b5fe428de35e5d6555ee2, type: 3}
   damageRadius: 0.5
 --- !u!58 &4396620531205909495
 CircleCollider2D:

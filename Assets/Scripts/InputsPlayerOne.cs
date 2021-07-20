@@ -5,12 +5,12 @@ using UnityEngine;
 public class InputsPlayerOne : InputsPlayer
 {
 
-    Tank tank;
+    Player playerTank;
     float _shootInterval;
     // Start is called before the first frame update
     void Start()
     {
-        tank = GetComponent<Tank>();
+        playerTank = GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -23,24 +23,24 @@ public class InputsPlayerOne : InputsPlayer
                 if (Input.GetButton("Horizontal"))
                 {
                     if (Input.GetAxis("Horizontal") < 0)
-                        tank.GoLeft();
+                        playerTank.GoLeft();
                     else
-                        tank.GoRight();
+                        playerTank.GoRight();
                 }
 
                 if (Input.GetButton("Vertical"))
                 {
                     if (Input.GetAxis("Vertical") < 0)
-                        tank.GoDown();
+                        playerTank.GoDown();
                     else
-                        tank.GoUp();
+                        playerTank.GoUp();
                 }  
             }
 
             if (Input.GetButton("Fire1")) { 
                 if(_shootInterval >= 0.5f  || _shootInterval == 0) 
                 {
-                    tank.Shoot();
+                    playerTank.Shoot(false);
                     if(_shootInterval > 0)
                         _shootInterval = 0;
                 }
@@ -55,23 +55,23 @@ public class InputsPlayerOne : InputsPlayer
             if(!onIce) 
             {
                 if (Input.GetKey(KeyCode.A))
-                    tank.GoLeft();
+                    playerTank.GoLeft();
 
                 if (Input.GetKey(KeyCode.D))
-                    tank.GoRight();
+                    playerTank.GoRight();
 
                 if (Input.GetKey(KeyCode.W))
-                    tank.GoUp();
+                    playerTank.GoUp();
 
                 if (Input.GetKey(KeyCode.S))
-                    tank.GoDown(); 
+                    playerTank.GoDown(); 
             }
 
             if (Input.GetKey(KeyCode.LeftControl))
             {
                 if (_shootInterval >= 0.5f || _shootInterval == 0)
                 {
-                    tank.Shoot();
+                    playerTank.Shoot(false);
                     if (_shootInterval > 0)
                         _shootInterval = 0;
                 }

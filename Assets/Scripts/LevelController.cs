@@ -26,10 +26,15 @@ public class LevelController : MonoBehaviour
     GameObject baseGO;
     GameObject gameOverTextGO;
 
+    GameObject pauseTextGO;
+
     public static bool isGameOver = false;
 
-    private float _timerGoToScoreScene;
+    public static bool isPause = false;
 
+    private float _timerGoToScoreScene;
+ 
+    float _msekPauseCnt = 0;
     void Start()
     {
         switch (gameMode)
@@ -56,12 +61,32 @@ public class LevelController : MonoBehaviour
         baseGO = Instantiate(basePrefab, new Vector3(13, -24, 0), Quaternion.identity);
    
         gameOverTextGO = GameObject.Find("GameOver");
+        pauseTextGO = GameObject.Find("Pause");
+        pauseTextGO.SetActive(false);
+
         isGameOver = false;
         _timerGoToScoreScene = 5.0f;
     }
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Return)) 
+        {
+            isPause = !isPause;    
+        }
+
+        if(isPause) {
+            _msekPauseCnt += Time.deltaTime;
+            if(_msekPauseCnt > 1.0) 
+                _msekPauseCnt = 0;
+            pauseTextGO.SetActive(_msekPauseCnt > 0.5f);
+        }
+        else 
+            pauseTextGO.SetActive(false);
+
+        if(LevelController.isPause)
+            return;
+
         if (_enemySpawnCounter > enemySpawnInterval)
         {
             GameObject enemy = Instantiate(enemyPrefab, spawnEnemy[_currentEnemySpawnIndex], Quaternion.identity);
@@ -99,9 +124,16 @@ public class LevelController : MonoBehaviour
 
             if (_timerGoToScoreScene <= 0 || Input.GetButtonDown("Submit"))
             {
-                StartCoroutine(LoadAsyncScoreScene());
+                StartCoroutine(LoadAsyncScene("ScoreScene"));
             }
             _timerGoToScoreScene -= Time.deltaTime;
+        }
+        else {
+
+            if(Input.GetKeyDown(KeyCode.Escape)) 
+            {
+                StartCoroutine(LoadAsyncScene("StartupScene"));
+            }
         }
     }
 
@@ -120,9 +152,9 @@ public class LevelController : MonoBehaviour
     }
 
 
-    IEnumerator LoadAsyncScoreScene()
+    IEnumerator LoadAsyncScene(string name)
     { 
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/ScoreScene");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/" + name);
         while (!asyncLoad.isDone)
         {
             yield return null;

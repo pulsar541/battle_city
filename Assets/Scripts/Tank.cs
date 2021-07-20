@@ -40,25 +40,25 @@ public class Tank : BattleObject
         tilemapCollider = GameObject.Find("Tilemap").GetComponent<Tilemap>();
     }
 
-    public void GoLeft()
+    public virtual void GoLeft()
     {
         _movement = new Vector3(-baseSpeed, 0);
         _childLocalRotation = Quaternion.Euler(0, 0, 0);
         lastDirection = (int)Direction.DIR_LEFT;
     }
-    public void GoRight()
+    public virtual void GoRight()
     {
         _movement = new Vector3(baseSpeed, 0);
         _childLocalRotation = Quaternion.Euler(0, 0, 180);
         lastDirection = (int)Direction.DIR_RIGHT;
     }
-    public void GoUp()
+    public virtual void GoUp()
     {
         _movement = new Vector3(0, baseSpeed);
         _childLocalRotation = Quaternion.Euler(0, 0, 270);
         lastDirection = (int)Direction.DIR_UP;
     }
-    public void GoDown()
+    public virtual void GoDown()
     {
         _movement = new Vector3(0, -baseSpeed);
         _childLocalRotation = Quaternion.Euler(0, 0, 90);
@@ -67,7 +67,7 @@ public class Tank : BattleObject
 
     // Update is called once per frame
     public void FixedUpdate()
-    {
+    { 
         foreach (Transform child in transform)
         {
             child.localRotation = _childLocalRotation;
@@ -83,12 +83,14 @@ public class Tank : BattleObject
         int i = 0;
         foreach (Transform child in transform)
         {
-            child.GetComponent<Renderer>().enabled = spriteChildEnableNum == i;
+            if(i > 1) 
+                break;
+            child.GetComponent<Renderer>().enabled = spriteChildEnableNum == i; 
             i++;
         }
     }
 
-    public void Shoot(bool isEnemyProjectile = false)
+    public virtual void Shoot(bool isEnemyProjectile = false)
     {
         Vector3 projectilePosition = transform.position;
         GameObject projectile = Instantiate(projectilePrefab, projectilePosition, _childLocalRotation * Quaternion.Euler(0, 0, 180.0f));

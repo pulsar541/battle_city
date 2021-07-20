@@ -11,8 +11,7 @@ public class Projectile : BattleObject
     private Tilemap tilemapWalls;
     [SerializeField] public TileBase tileBaseSteelWall;
     [SerializeField] public TileBase tileBaseBrickWall;
-    [SerializeField] public TileBase tileBaseMapLimit; 
-
+    [SerializeField] public TileBase tileBaseMapLimit;  
     [SerializeField] public GameObject canvasTempInfoPrefab; 
 
     private bool _isEnemy = false;
