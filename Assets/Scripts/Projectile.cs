@@ -94,7 +94,7 @@ public class Projectile : BattleObject
                     }
                     wasCollide = true;
                 }  
-                else if (hitCollider.name.IndexOf("Player") > -1 && _isEnemy)
+                else if (hitCollider.name.IndexOf("Player") > -1)
                 {
                     hitCollider.gameObject.GetComponent<BattleObject>().Health -= 100; 
                     wasCollide = true;

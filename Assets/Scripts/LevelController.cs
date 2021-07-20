@@ -71,6 +71,8 @@ public class LevelController : MonoBehaviour
         isGameOver = false;
         _timerGoToScoreScene = 5.0f;
         enemySpawnCount = 0; 
+
+        Global.Reset();
     }
     // Update is called once per frame
     void Update()
@@ -112,7 +114,7 @@ public class LevelController : MonoBehaviour
             enemyTanksDestroyed += Global.destroyedTankTypesCounter[0, type];
 
         if(enemyTanksDestroyed >= maxEnemyCount) {
-            StartCoroutine(LoadAsyncScene("ScoreScene"));
+            StartCoroutine(LoadAsyncScene("ScoreScene", true));
         }
   
 
@@ -168,8 +170,11 @@ public class LevelController : MonoBehaviour
     }
 
 
-    IEnumerator LoadAsyncScene(string name)
+    IEnumerator LoadAsyncScene(string name, bool waitBefore = false)
     { 
+        if(waitBefore)
+            yield return new WaitForSeconds(3.0f);
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/" + name);
         while (!asyncLoad.isDone)
         {
