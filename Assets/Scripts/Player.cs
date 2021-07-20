@@ -49,10 +49,9 @@ public class Player : Tank
             Global.destroyedTankTypesCounter[selfIndex, i] = 0;
     }
 
-
-
+ 
     public override void BattleObjectUpdate()
-    {
+    { 
 
         if (LevelController.isGameOver)
             return;
@@ -82,7 +81,7 @@ public class Player : Tank
         }
 
         if (audioSourceEngine != null) 
-            audioSourceEngine.pitch = 0.75f;  
+            audioSourceEngine.pitch = 0.75f + _rigidbody.velocity.magnitude / _rigidbody.transform.localScale.x *0.04f;  
 
         if (GetComponent<InputsPlayer>() != null)
             GetComponent<InputsPlayer>().InputsUpdate(onIce);
@@ -115,32 +114,5 @@ public class Player : Tank
         soundSourceFire.PlayOneShot(fireSound);
     }
 
-
-    public override void GoDown()
-    {
-        base.GoDown();
-        if (audioSourceEngine != null)
-            audioSourceEngine.pitch = 1.0f;
-    }
-
-    public override void GoLeft()
-    {
-        base.GoLeft();
-        if (audioSourceEngine != null)
-            audioSourceEngine.pitch = 1.0f;
-    }
-    public override void GoRight()
-    {
-        base.GoRight();
-        if (audioSourceEngine != null)
-            audioSourceEngine.pitch = 1.0f;
-    }
-    public override void GoUp()
-    {
-        base.GoUp();
-        if (audioSourceEngine != null) {
-            audioSourceEngine.pitch = 1.0f; 
-        }
-    }
-
+ 
 }

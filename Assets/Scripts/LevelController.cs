@@ -35,6 +35,9 @@ public class LevelController : MonoBehaviour
     private float _timerGoToScoreScene;
  
     float _msekPauseCnt = 0;
+
+    public int enemyCount = 20;
+
     void Start()
     {
         switch (gameMode)
@@ -70,7 +73,7 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return)) 
+        if(!isGameOver && Input.GetKeyDown(KeyCode.Return)) 
         {
             isPause = !isPause;    
         }
@@ -87,15 +90,24 @@ public class LevelController : MonoBehaviour
         if(LevelController.isPause)
             return;
 
-        if (_enemySpawnCounter > enemySpawnInterval)
+        if (enemyCount > 0)
         {
-            GameObject enemy = Instantiate(enemyPrefab, spawnEnemy[_currentEnemySpawnIndex], Quaternion.identity);
-            _enemySpawnCounter = 0;
-            _currentEnemySpawnIndex++;
-            if (_currentEnemySpawnIndex > 2)
-                _currentEnemySpawnIndex = 0;
+            if (_enemySpawnCounter > enemySpawnInterval)
+            {
+                GameObject enemy = Instantiate(enemyPrefab, spawnEnemy[_currentEnemySpawnIndex], Quaternion.identity);
+                _enemySpawnCounter = 0;
+                _currentEnemySpawnIndex++;
+                if (_currentEnemySpawnIndex > 2)
+                    _currentEnemySpawnIndex = 0;
+
+                enemyCount--;                
+            }
+            _enemySpawnCounter += Time.deltaTime;
         }
-        _enemySpawnCounter += Time.deltaTime;
+        else 
+        {
+            StartCoroutine(LoadAsyncScene("ScoreScene"));
+        }
 
 
 
@@ -139,8 +151,7 @@ public class LevelController : MonoBehaviour
 
 
     public static void UpdateBattleInformation()
-    {
-
+    { 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {
