@@ -97,6 +97,12 @@ public class Tank : BattleObject
         projectile.GetComponent<Projectile>().IsEnemy = isEnemyProjectile;
         projectile.GetComponent<Projectile>().creatorInstanseID = this.gameObject.GetInstanceID();
     }
+
+    public override void SetHealth(int health) 
+    {
+        base.SetHealth(health);
+        LevelController.UpdateBattleInformation();
+    }
  
     public override void OnZeroHealth()
     {  

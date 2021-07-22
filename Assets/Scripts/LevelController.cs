@@ -44,19 +44,18 @@ public class LevelController : MonoBehaviour
         switch (gameMode)
         {
             case 0:
-                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity);
-                player1.GetComponent<Player>().selfIndex = 0; 
+                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity); 
                 player1.AddComponent<InputsPlayerOne>();
-
+                player1.GetComponent<Player>().Init(0, spawnPlayer1);
                 break;
             case 1:
-                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity);
-                player1.GetComponent<Player>().selfIndex = 0;
+                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity); 
                 player1.AddComponent<InputsPlayerOne>();
+                player1.GetComponent<Player>().Init(0, spawnPlayer1);
 
-                player2 = Instantiate(playerPrefab, spawnPlayer2, Quaternion.identity);
-                player2.GetComponent<Player>().selfIndex = 1;
+                player2 = Instantiate(playerPrefab, spawnPlayer2, Quaternion.identity); 
                 player2.AddComponent<InputsPlayerTwo>(); 
+                player2.GetComponent<Player>().Init(1, spawnPlayer2);
                 break;
             case 2:
                 break;

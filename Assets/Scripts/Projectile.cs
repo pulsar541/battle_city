@@ -85,14 +85,14 @@ public class Projectile : BattleObject
             if(hitCollider.gameObject.GetInstanceID() != creatorInstanseID) 
             {
                 if (hitCollider.name.IndexOf("Projectile") > -1 && hitCollider.gameObject.GetInstanceID() != this.gameObject.GetInstanceID()) {
-                    hitCollider.gameObject.GetComponent<BattleObject>().Health = 0;
+                    hitCollider.gameObject.GetComponent<BattleObject>().ChangeHealth(-100);
                     wasCollide = true;
                 }
                 else if (hitCollider.name.IndexOf("Enemy") > -1)
                 {
                     if(!_isEnemy) 
                     {   Enemy enemy = hitCollider.gameObject.GetComponent<Enemy>();
-                        enemy.Health -= 100; 
+                        enemy.ChangeHealth(-100); 
                         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                         foreach(GameObject player in players) {
                             if(player.GetInstanceID() == creatorInstanseID) {
@@ -106,12 +106,12 @@ public class Projectile : BattleObject
                 }  
                 else if (hitCollider.name.IndexOf("Player") > -1)
                 {
-                    hitCollider.gameObject.GetComponent<BattleObject>().Health -= 100; 
+                    hitCollider.gameObject.GetComponent<BattleObject>().ChangeHealth(-100); 
                     wasCollide = true;
                 } 
                 else if (hitCollider.name.IndexOf("Base") > -1)
                 {
-                    hitCollider.gameObject.GetComponent<BattleObject>().Health -= 100; 
+                    hitCollider.gameObject.GetComponent<BattleObject>().ChangeHealth(-100); 
                     wasCollide = true;
                 } 
             }
@@ -119,7 +119,7 @@ public class Projectile : BattleObject
 
         if (wasCollide)
         {
-            Health = 0;
+            ChangeHealth(-100);
         }
  
     }

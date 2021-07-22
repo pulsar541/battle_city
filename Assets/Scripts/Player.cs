@@ -14,17 +14,19 @@ public class Player : Tank
 
     public int selfIndex = -1;
 
-    public Vector3 spawnPosition = new Vector3();
+    public Vector3 _spawnPosition = new Vector3();
 
     public float _shootInterval = 0;
 
     AudioSource audioSourceEngine = null;
     [SerializeField]  AudioClip engineAudioClip;
 
+    private bool _isRespawnProcess = false;
+
     void Start()
     {
         gameObject.name = "Player" + GetInstanceID().ToString();
-        spawnPosition = transform.position;
+        //_spawnPosition = transform.position;
         Lives = 3;
         LevelController.UpdateBattleInformation();
 
@@ -41,10 +43,11 @@ public class Player : Tank
 
     }
 
-    public void Init(int index)
+    public void Init(int index, Vector3 spawnPosition)
     {
         selfIndex = index;
         Global.score[index] = 0;
+        _spawnPosition = spawnPosition;
         for (int i = 0; i < (int)Tank.Type.MAX_TYPES; i++)
             Global.destroyedTankTypesCounter[selfIndex, i] = 0;
     }
@@ -54,6 +57,9 @@ public class Player : Tank
     { 
 
         if (LevelController.isGameOver)
+            return;
+
+        if(_isRespawnProcess)
             return;
 
         Vector3Int cellWorldPosition = tilemapCollider.WorldToCell(transform.position);
@@ -92,9 +98,9 @@ public class Player : Tank
     public override void OnZeroHealth()
     {
         base.OnZeroHealth();
-        //transform.position = spawnPosition;
-        Health = 100;
-        _rigidbody.MovePosition(spawnPosition);
+        StartCoroutine(Respawn());  
+       // _rigidbody.MovePosition(_spawnPosition);  
+       // SetHealth(100);     
     }
 
     public void UpdateScore(int deltaScore)
@@ -114,5 +120,15 @@ public class Player : Tank
         soundSourceFire.PlayOneShot(fireSound);
     }
 
+ 
+    IEnumerator Respawn()
+    {    SetHealth(100); 
+        _isRespawnProcess = true; 
+        transform.position = new Vector3(1000,1000,0);
+        yield return new WaitForSeconds(1.5f); 
+        transform.position = _spawnPosition; 
+        _isRespawnProcess = false;
+         yield return null;
+    }
  
 }
