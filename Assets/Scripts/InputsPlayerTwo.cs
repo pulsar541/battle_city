@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class InputsPlayerTwo : InputsPlayer
 {
-     Tank tank;
+     Player tank;
     float _shootInterval;
     // Start is called before the first frame update
     void Start()
     {
-        tank = GetComponent<Tank>();
+        tank = GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -31,11 +31,16 @@ public class InputsPlayerTwo : InputsPlayer
 
         }
 
-        if (Input.GetKey(KeyCode.RightControl))
+        if (Input.GetKey(KeyCode.RightControl) )
         {
+           
             if (_shootInterval >= 0.5f || _shootInterval == 0)
             {
-                tank.Shoot();
+                if(tank.allowNextShoot) {
+                    tank.Shoot(false);
+                    tank.allowNextShoot = false; 
+                }
+
                 if (_shootInterval > 0)
                     _shootInterval = 0;
             }
@@ -45,5 +50,10 @@ public class InputsPlayerTwo : InputsPlayer
         {
             _shootInterval = 0;
         }       
+
+        // if (Input.GetKey(KeyCode.RightControl) && tank.allowNextShoot) {
+        //     tank.allowNextShoot = false;  
+        //     tank.Shoot(false);
+        // }  
     }
 }

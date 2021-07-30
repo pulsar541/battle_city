@@ -13,6 +13,8 @@ public class Projectile : BattleObject
     [SerializeField] public TileBase tileBaseBrickWall;
     [SerializeField] public TileBase tileBaseMapLimit;  
     [SerializeField] public GameObject canvasTempInfoPrefab; 
+    
+    public GameObject shootedByTankGo;
 
     private bool _isEnemy = false;
     public bool IsEnemy {
@@ -118,7 +120,7 @@ public class Projectile : BattleObject
         }  
 
         if (wasCollide)
-        {
+        { 
             ChangeHealth(-100);
         }
  
@@ -127,6 +129,10 @@ public class Projectile : BattleObject
     public override void OnZeroHealth()
     {
         base.OnZeroHealth();
+
+        if(shootedByTankGo && shootedByTankGo.GetComponent<Player>())
+            shootedByTankGo.GetComponent<Player>().allowNextShoot = true;
+
         Destroy(this.gameObject);
     }
 }

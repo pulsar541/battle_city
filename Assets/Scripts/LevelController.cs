@@ -30,6 +30,7 @@ public class LevelController : MonoBehaviour
     GameObject pauseTextGO;
 
     [SerializeField] private Tilemap tilemap;
+    [SerializeField] private Tilemap tilemapOver;
     [SerializeField] private TileBase tileBaseSteelWall;
     [SerializeField] private TileBase tileBaseBrickWall;
     [SerializeField] private TileBase tileBaseForest;
@@ -206,8 +207,10 @@ public class LevelController : MonoBehaviour
     void GenerateMap()
     {
 
+        Tilemap currTileMap = null;
+        Tilemap anotherTileMap = null;
         TileBase currTileBase = null;
-
+        
         for (float i = 0; i <= 25; i++)
         {
             for (float j = 0; j >= -25; j--)
@@ -217,13 +220,16 @@ public class LevelController : MonoBehaviour
 
                 Vector3Int cellWorldPosition = tilemap.WorldToCell(new Vector3(i, j, -1));
                 tilemap.SetTile(cellWorldPosition, null);
+                tilemapOver.SetTile(cellWorldPosition, null);
 
             }
         }
 
+
+        int whatTileInsert = -1;
         int i_cut = 12;
         int j_cut = -12;
-        for (int s = 0; s < 400; s++)
+        for (int s = 0; s < 300; s++)
         {
             int dir = Random.Range(0, 4);
             switch (dir)
@@ -237,6 +243,7 @@ public class LevelController : MonoBehaviour
             if (i_cut < 0 || i_cut > 24 /*||j_cut > -1 || j_cut < -25*/)
             {
                 i_cut = Random.Range(0, 24);
+                s--;
                 // j_cut = Random.Range(-25, -1);
             }
 
@@ -244,6 +251,7 @@ public class LevelController : MonoBehaviour
             {
                 // i_cut = Random.Range(0, 24);
                 j_cut = Random.Range(-25, -1);
+                s--;
             }
 
             if (i_cut <= 1 && j_cut >= -1)
@@ -259,33 +267,67 @@ public class LevelController : MonoBehaviour
                 continue;
 
 
-            if (i_cut >= 9 && i_cut <= 10 && j_cut <=-24)
-                continue;
-
-                
-            if (i_cut >= 15 && i_cut <= 16 && j_cut <=-24)
+            if (i_cut >= 9 && i_cut <= 10 && j_cut <= -24)
                 continue;
 
 
-            Vector3Int cellWorldPosition = tilemap.WorldToCell(new Vector3(i_cut, j_cut, -1));
-
-            if (Random.Range(0, 100) < 10)
+            if (i_cut >= 15 && i_cut <= 16 && j_cut <= -24)
+                continue; 
+             
+            if (Random.Range(0, 100) < 20)
             {
-                int whatTileInsert = Random.Range(0, 4);
+                whatTileInsert = Random.Range(0, 5);
                 switch (whatTileInsert)
                 {
                     case 0: currTileBase = tileBaseBrickWall; break;
                     case 1: currTileBase = tileBaseForest; break;
                     case 2: if (Random.Range(0, 100) < 20) currTileBase = tileBaseRiver; break;
                     case 3: currTileBase = tileBaseIce; break;
-                    case 4: currTileBase = tileBaseSteelWall; break;
+                    case 4: if (Random.Range(0, 100) < 40) currTileBase = tileBaseSteelWall; break; 
+
                 }
             }
 
-            tilemap.SetTile(cellWorldPosition, currTileBase);
-            tilemap.SetTile(cellWorldPosition + new Vector3Int(1, 1, 0), currTileBase);
-            tilemap.SetTile(cellWorldPosition + new Vector3Int(1, 0, 0), currTileBase);
-            tilemap.SetTile(cellWorldPosition + new Vector3Int(0, 1, 0), currTileBase);
+
+            currTileMap = currTileBase == tileBaseForest ? tilemapOver : tilemap;
+            anotherTileMap = currTileMap == tilemap ? tilemapOver : tilemap; 
+            Vector3Int cellWorldPosition = currTileMap.WorldToCell(new Vector3(i_cut, j_cut, -1));
+                 
+            if(whatTileInsert != 5) { 
+                
+                    // if(tilemap.GetTile(cellWorldPosition) != null) {
+                    //     s--;
+                    //     continue;
+                    // }
+        
+
+                    currTileMap.SetTile(cellWorldPosition, currTileBase);
+                    currTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 1, 0), currTileBase);
+                    currTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 0, 0), currTileBase);
+                    currTileMap.SetTile(cellWorldPosition + new Vector3Int(0, 1, 0), currTileBase); 
+
+                    anotherTileMap.SetTile(cellWorldPosition, null);
+                    anotherTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 1, 0), null);
+                    anotherTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 0, 0), null);
+                    anotherTileMap.SetTile(cellWorldPosition + new Vector3Int(0, 1, 0), null); 
+
+            }
+            else {
+
+                    currTileMap.SetTile(cellWorldPosition, null);
+                    currTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 1, 0), null);
+                    currTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 0, 0), null);
+                    currTileMap.SetTile(cellWorldPosition + new Vector3Int(0, 1, 0), null); 
+
+                    anotherTileMap.SetTile(cellWorldPosition, null);
+                    anotherTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 1, 0), null);
+                    anotherTileMap.SetTile(cellWorldPosition + new Vector3Int(1, 0, 0), null);
+                    anotherTileMap.SetTile(cellWorldPosition + new Vector3Int(0, 1, 0), null); 
+
+
+            }
+
+
         }
 
 
@@ -295,12 +337,11 @@ public class LevelController : MonoBehaviour
             {
                 Vector3Int cellWorldPosition = tilemap.WorldToCell(new Vector3(i, j, -1));
 
-                if (i <= 1 && j >= -1)
+                if ((i <= 1 && j >= -1) || (i >= 24 && j >= -1) || (i >= 12 && i <= 13 && j >= -1))
+                {
                     tilemap.SetTile(cellWorldPosition, null);
-                if (i >= 24 && j >= -1)
-                    tilemap.SetTile(cellWorldPosition, null);
-                if (i >= 12 && i <= 13 && j >= -1)
-                    tilemap.SetTile(cellWorldPosition, null);
+                    tilemapOver.SetTile(cellWorldPosition, null);
+                }
 
             }
         }

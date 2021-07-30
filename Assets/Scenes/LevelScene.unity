@@ -492,6 +492,7 @@ MonoBehaviour:
   bonusPrefab: {fileID: 0}
   enemySpawnInterval: 3
   tilemap: {fileID: 1057598754}
+  tilemapOver: {fileID: 1787846189}
   tileBaseSteelWall: {fileID: 11400000, guid: 3941fc68ed1799a48a6040d21584605c, type: 2}
   tileBaseBrickWall: {fileID: 11400000, guid: 0fc22033e73224e4cb012eced0a10077, type: 2}
   tileBaseForest: {fileID: 11400000, guid: 6ffd7fdd18e30f74996cbb996cc662f0, type: 2}
@@ -843,7 +844,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057598751}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 917935507}
@@ -888,7 +889,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -4837,7 +4838,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787846186}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 917935507}

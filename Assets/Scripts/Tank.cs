@@ -96,6 +96,7 @@ public class Tank : BattleObject
         GameObject projectile = Instantiate(projectilePrefab, projectilePosition, _childLocalRotation * Quaternion.Euler(0, 0, 180.0f));
         projectile.GetComponent<Projectile>().IsEnemy = isEnemyProjectile;
         projectile.GetComponent<Projectile>().creatorInstanseID = this.gameObject.GetInstanceID();
+        projectile.GetComponent<Projectile>().shootedByTankGo = this.gameObject;
     }
 
     public override void SetHealth(int health) 

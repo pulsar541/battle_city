@@ -23,6 +23,8 @@ public class Player : Tank
 
     private bool _isRespawnProcess = false;
 
+    public bool allowNextShoot = true;
+
     void Start()
     {
         gameObject.name = "Player" + GetInstanceID().ToString();

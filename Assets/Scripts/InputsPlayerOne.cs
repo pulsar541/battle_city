@@ -37,10 +37,21 @@ public class InputsPlayerOne : InputsPlayer
                 }  
             }
 
-            if (Input.GetButton("Fire1")) { 
+            // if (Input.GetButton("Fire1") && playerTank.allowNextShoot) {
+            //     playerTank.allowNextShoot = false;  
+            //     playerTank.Shoot(false);
+            // }  
+       
+
+            if (Input.GetButton("Fire1")) 
+            {
+                
                 if(_shootInterval >= 0.5f  || _shootInterval == 0) 
                 {
-                    playerTank.Shoot(false);
+                    if(playerTank.allowNextShoot) {
+                        playerTank.Shoot(false);
+                        playerTank.allowNextShoot = false;
+                    }
                     if(_shootInterval > 0)
                         _shootInterval = 0;
                 }
@@ -49,6 +60,9 @@ public class InputsPlayerOne : InputsPlayer
             if (Input.GetButtonUp("Fire1")) {
                 _shootInterval = 0;
             } 
+
+
+            
         }
         else if(LevelController.gameMode == 1) 
         {
@@ -67,11 +81,14 @@ public class InputsPlayerOne : InputsPlayer
                     playerTank.GoDown(); 
             }
 
-            if (Input.GetKey(KeyCode.LeftControl))
-            {
+            if (Input.GetKey(KeyCode.LeftControl) )
+            {   
                 if (_shootInterval >= 0.5f || _shootInterval == 0)
                 {
-                    playerTank.Shoot(false);
+                    if(playerTank.allowNextShoot) {
+                        playerTank.Shoot(false);
+                        playerTank.allowNextShoot = false;
+                    }
                     if (_shootInterval > 0)
                         _shootInterval = 0;
                 }
@@ -80,7 +97,12 @@ public class InputsPlayerOne : InputsPlayer
             if (Input.GetKeyUp(KeyCode.LeftControl))
             {
                 _shootInterval = 0;
-            }      
+            }   
+
+            // if (Input.GetKey(KeyCode.LeftControl) && playerTank.allowNextShoot) {
+            //     playerTank.allowNextShoot = false;  
+            //     playerTank.Shoot(false);
+            // }     
         }
     }
 }
