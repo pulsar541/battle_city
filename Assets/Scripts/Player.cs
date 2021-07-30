@@ -87,7 +87,7 @@ public class Player : Tank
         }
 
         if (audioSourceEngine != null) 
-            audioSourceEngine.pitch = 0.75f + _rigidbody.velocity.magnitude / _rigidbody.transform.localScale.x *0.04f;  
+            audioSourceEngine.pitch = 0.5f + _rigidbody.velocity.magnitude / _rigidbody.transform.localScale.x *0.06f;  
 
         if (GetComponent<InputsPlayer>() != null)
             GetComponent<InputsPlayer>().InputsUpdate(onIce);

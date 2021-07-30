@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class LevelController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class LevelController : MonoBehaviour
     Vector3 spawnPlayer1 = new Vector3(9, -24, 0);
     Vector3 spawnPlayer2 = new Vector3(17, -24, 0);
 
-    Vector3[] spawnEnemy = { new Vector3(1, 0, 0), new Vector3(13, 0, 0), new Vector3(24, 0, 0) }; 
+    Vector3[] spawnEnemy = { new Vector3(1, 0, 0), new Vector3(13, 0, 0), new Vector3(24, 0, 0) };
 
     public float enemySpawnInterval = 3.0f;
     private int _currentEnemySpawnIndex = 0;
@@ -28,97 +29,113 @@ public class LevelController : MonoBehaviour
 
     GameObject pauseTextGO;
 
+    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private TileBase tileBaseSteelWall;
+    [SerializeField] private TileBase tileBaseBrickWall;
+    [SerializeField] private TileBase tileBaseForest;
+    [SerializeField] private TileBase tileBaseRiver;
+    [SerializeField] private TileBase tileBaseIce;
+
     public static bool isGameOver = false;
 
     public static bool isPause = false;
 
     private float _timerGoToScoreScene;
- 
+
     float _msekPauseCnt = 0;
 
     public const int maxEnemyCount = 20;
     public int enemySpawnCount = 0;
+
+    void Awak()
+    {
+        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+    }
 
     void Start()
     {
         switch (gameMode)
         {
             case 0:
-                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity); 
+                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity);
                 player1.AddComponent<InputsPlayerOne>();
                 player1.GetComponent<Player>().Init(0, spawnPlayer1);
                 break;
             case 1:
-                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity); 
+                player1 = Instantiate(playerPrefab, spawnPlayer1, Quaternion.identity);
                 player1.AddComponent<InputsPlayerOne>();
                 player1.GetComponent<Player>().Init(0, spawnPlayer1);
 
-                player2 = Instantiate(playerPrefab, spawnPlayer2, Quaternion.identity); 
-                player2.AddComponent<InputsPlayerTwo>(); 
+                player2 = Instantiate(playerPrefab, spawnPlayer2, Quaternion.identity);
+                player2.AddComponent<InputsPlayerTwo>();
                 player2.GetComponent<Player>().Init(1, spawnPlayer2);
                 break;
             case 2:
                 break;
         }
-   
+
         baseGO = Instantiate(basePrefab, new Vector3(13, -24, 0), Quaternion.identity);
-   
+
         gameOverTextGO = GameObject.Find("GameOver");
         pauseTextGO = GameObject.Find("Pause");
         pauseTextGO.SetActive(false);
 
         isGameOver = false;
         _timerGoToScoreScene = 5.0f;
-        enemySpawnCount = 0; 
+        enemySpawnCount = 0;
 
         Global.Reset();
+
+        GenerateMap();
     }
     // Update is called once per frame
     void Update()
     {
-        if(!isGameOver && Input.GetKeyDown(KeyCode.Return)) 
+        if (!isGameOver && Input.GetKeyDown(KeyCode.Return))
         {
-            isPause = !isPause;    
+            isPause = !isPause;
         }
 
-        if(isPause) {
+        if (isPause)
+        {
             _msekPauseCnt += Time.deltaTime;
-            if(_msekPauseCnt > 1.0) 
+            if (_msekPauseCnt > 1.0)
                 _msekPauseCnt = 0;
             pauseTextGO.SetActive(_msekPauseCnt > 0.5f);
         }
-        else 
+        else
             pauseTextGO.SetActive(false);
 
-        if(isPause)
+        if (isPause)
             return;
 
         if (enemySpawnCount < maxEnemyCount)
         {
             if (_enemySpawnCounter > enemySpawnInterval)
             {
-                enemySpawnCount++; 
+                enemySpawnCount++;
                 GameObject enemy = Instantiate(enemyPrefab, spawnEnemy[_currentEnemySpawnIndex], Quaternion.identity);
                 _enemySpawnCounter = 0;
                 _currentEnemySpawnIndex++;
                 if (_currentEnemySpawnIndex > 2)
                     _currentEnemySpawnIndex = 0;
- 
+
             }
             _enemySpawnCounter += Time.deltaTime;
-        } 
+        }
 
         int enemyTanksDestroyed = 0;
 
-        for(int p = 0; p < Global.MaxPlayersCount; p ++)
-            for(int type = 0; type < (int)Tank.Type.MAX_TYPES; type ++)
+        for (int p = 0; p < Global.MaxPlayersCount; p++)
+            for (int type = 0; type < (int)Tank.Type.MAX_TYPES; type++)
                 enemyTanksDestroyed += Global.destroyedTankTypesCounter[p, type];
 
 
-        if(enemyTanksDestroyed >= maxEnemyCount) {
+        if (enemyTanksDestroyed >= maxEnemyCount)
+        {
             StartCoroutine(LoadAsyncScene("ScoreScene", true));
         }
-  
+
 
         if (gameMode == 0)
         {
@@ -149,9 +166,10 @@ public class LevelController : MonoBehaviour
             }
             _timerGoToScoreScene -= Time.deltaTime;
         }
-        else {
+        else
+        {
 
-            if(Input.GetKeyDown(KeyCode.Escape)) 
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 StartCoroutine(LoadAsyncScene("StartupScene"));
             }
@@ -160,7 +178,7 @@ public class LevelController : MonoBehaviour
 
 
     public static void UpdateBattleInformation()
-    { 
+    {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {
@@ -173,8 +191,8 @@ public class LevelController : MonoBehaviour
 
 
     IEnumerator LoadAsyncScene(string name, bool waitBefore = false)
-    { 
-        if(waitBefore)
+    {
+        if (waitBefore)
             yield return new WaitForSeconds(3.0f);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Scenes/" + name);
@@ -183,5 +201,113 @@ public class LevelController : MonoBehaviour
             yield return null;
         }
     }
-    
+
+
+    void GenerateMap()
+    {
+
+        TileBase currTileBase = null;
+
+        for (float i = 0; i <= 25; i++)
+        {
+            for (float j = 0; j >= -25; j--)
+            {
+                if (i >= 11 && i <= 14 && j <= -23)
+                    continue;
+
+                Vector3Int cellWorldPosition = tilemap.WorldToCell(new Vector3(i, j, -1));
+                tilemap.SetTile(cellWorldPosition, null);
+
+            }
+        }
+
+        int i_cut = 12;
+        int j_cut = -12;
+        for (int s = 0; s < 400; s++)
+        {
+            int dir = Random.Range(0, 4);
+            switch (dir)
+            {
+                case 0: i_cut += 2; break;
+                case 1: i_cut -= 2; break;
+                case 2: j_cut += 2; break;
+                case 3: j_cut -= 2; break;
+            }
+
+            if (i_cut < 0 || i_cut > 24 /*||j_cut > -1 || j_cut < -25*/)
+            {
+                i_cut = Random.Range(0, 24);
+                // j_cut = Random.Range(-25, -1);
+            }
+
+            if (/*i_cut < 0 || i_cut > 24 ||*/ j_cut < -25 || j_cut > -1)
+            {
+                // i_cut = Random.Range(0, 24);
+                j_cut = Random.Range(-25, -1);
+            }
+
+            if (i_cut <= 1 && j_cut >= -1)
+                continue;
+
+            if (i_cut >= 24 && j_cut >= -1)
+                continue;
+
+            if (i_cut >= 12 && i_cut <= 13 && j_cut >= -1)
+                continue;
+
+            if (i_cut >= 11 && i_cut <= 14 && j_cut <= -23)
+                continue;
+
+
+            if (i_cut >= 9 && i_cut <= 10 && j_cut <=-24)
+                continue;
+
+                
+            if (i_cut >= 15 && i_cut <= 16 && j_cut <=-24)
+                continue;
+
+
+            Vector3Int cellWorldPosition = tilemap.WorldToCell(new Vector3(i_cut, j_cut, -1));
+
+            if (Random.Range(0, 100) < 10)
+            {
+                int whatTileInsert = Random.Range(0, 4);
+                switch (whatTileInsert)
+                {
+                    case 0: currTileBase = tileBaseBrickWall; break;
+                    case 1: currTileBase = tileBaseForest; break;
+                    case 2: if (Random.Range(0, 100) < 20) currTileBase = tileBaseRiver; break;
+                    case 3: currTileBase = tileBaseIce; break;
+                    case 4: currTileBase = tileBaseSteelWall; break;
+                }
+            }
+
+            tilemap.SetTile(cellWorldPosition, currTileBase);
+            tilemap.SetTile(cellWorldPosition + new Vector3Int(1, 1, 0), currTileBase);
+            tilemap.SetTile(cellWorldPosition + new Vector3Int(1, 0, 0), currTileBase);
+            tilemap.SetTile(cellWorldPosition + new Vector3Int(0, 1, 0), currTileBase);
+        }
+
+
+        for (float i = 0; i <= 25; i++)
+        {
+            for (float j = 0; j >= -25; j--)
+            {
+                Vector3Int cellWorldPosition = tilemap.WorldToCell(new Vector3(i, j, -1));
+
+                if (i <= 1 && j >= -1)
+                    tilemap.SetTile(cellWorldPosition, null);
+                if (i >= 24 && j >= -1)
+                    tilemap.SetTile(cellWorldPosition, null);
+                if (i >= 12 && i <= 13 && j >= -1)
+                    tilemap.SetTile(cellWorldPosition, null);
+
+            }
+        }
+
+
+
+
+    }
+
 }
