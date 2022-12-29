@@ -287,6 +287,7 @@ MonoBehaviour:
   _spawnPosition: {x: 0, y: 0, z: 0}
   _shootInterval: 0
   engineAudioClip: {fileID: 8300000, guid: 318c3f8566c127546b7df7954723ef8f, type: 3}
+  allowNextShoot: 1
 --- !u!50 &498517919451408605
 Rigidbody2D:
   serializedVersion: 4

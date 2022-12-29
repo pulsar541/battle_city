@@ -112,8 +112,14 @@ public class Player : Tank
     }
     public void UpdateDestroyedTanksInfo(Tank.Type type)
     {
+
+        //Debug.Log("UpdateDestroyedTanksInfo0 " + Global.destroyedTankTypesCounter[0, 0]);
         if ((int)type >= 0 && (int)type < (int)Tank.Type.MAX_TYPES)
             Global.destroyedTankTypesCounter[selfIndex, (int)type]++;
+
+        //Debug.Log("UpdateDestroyedTanksInfo1 " + Global.destroyedTankTypesCounter[0, 0]);
+
+        LevelController.UpdateBattleInformation();
     }
 
     public override void Shoot(bool isEnemyProjectile)

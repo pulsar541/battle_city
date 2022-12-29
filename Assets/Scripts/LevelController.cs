@@ -36,6 +36,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private TileBase tileBaseForest;
     [SerializeField] private TileBase tileBaseRiver;
     [SerializeField] private TileBase tileBaseIce;
+    [SerializeField] private TileBase tileEnemyCounter;
 
     public static bool isGameOver = false;
 
@@ -188,6 +189,32 @@ public class LevelController : MonoBehaviour
             if (txt != null)
                 txt.GetComponent<UnityEngine.UI.Text>().text = player.GetComponent<Player>().Lives.ToString();
         }
+
+
+        int total = 0;
+        for (int i = 0; i < Global.MaxPlayersCount; i++)
+        {
+            total += Global.score[i];
+        }
+         
+        LevelController levelController = GameObject.FindObjectOfType<LevelController>();  
+        Vector3Int cellEnemyCounterWorldPosition;
+      
+        for (int p = 0; p < (int)Global.MaxPlayersCount; p++)
+        for (int t = 0; t < (int)Tank.Type.MAX_TYPES; t++) 
+        {
+            int posByPlayerOffset = (p == 0) ? 0 : 35;
+            int i = 0;
+            int row = 0;
+            for (int s = 0; s < Global.destroyedTankTypesCounter[p, t]; s++)
+            {
+                cellEnemyCounterWorldPosition = levelController.tilemap.WorldToCell(new Vector3(i-3 + posByPlayerOffset, row, -1));
+                levelController.tilemap.SetTile(cellEnemyCounterWorldPosition, levelController.tileEnemyCounter); 
+                if (i == 1) row--; 
+                i = 1 - i;
+            }
+        } 
+        
     }
 
 
@@ -345,7 +372,6 @@ public class LevelController : MonoBehaviour
 
             }
         }
-
 
 
 

@@ -114,7 +114,7 @@ public class Tank : BattleObject
     }
 
     public override void OnZeroLives()
-    {
+    { 
         Destroy(this.gameObject); 
     }    
 
